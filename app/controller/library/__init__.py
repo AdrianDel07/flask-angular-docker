@@ -8,4 +8,4 @@ library = Blueprint("library", __name__, url_prefix="/api/v1")
 
 from app.controller.library.index import *
 
-from app.db.models.library import *
+from app.models.library import *
