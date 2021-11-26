@@ -1,17 +1,43 @@
-#!/usr/bin/env python3
-"""
-SQLAlchemy model Books
-"""
-from flask import Flask
-from app.application.command.bookCommand import BookCommand
-from app.infrastructure.books.controller import app_views
-
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from src.infrastructure.books.controller import controller
+from flask_cors import (CORS, cross_origin)
 
 app = Flask(__name__)
-app.register_blueprint(app_views)
-app.url_map.strict_slashes = False
-BookCommand = BookCommand()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:root@localhost:5432/source_meridian'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+app.register_blueprint(controller)
+
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
+
+class Book(db.Model):
+    __tablename__ = 'book'
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
+    title = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(250), nullable=False)
+    read = db.Column(db.Boolean(), nullable=False)
+
+    def __init__(self, title, author, read):
+        self.title = title
+        self.author = author
+        self.read = read
+
+db.create_all()
+
+class BookSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'title', 'author', 'read')
+
+
+book_schema = BookSchema()
+books_schema = BookSchema(many=True)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(debug=True)

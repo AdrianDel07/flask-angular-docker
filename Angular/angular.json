@@ -111,6 +111,7 @@
   },
   "defaultProject": "ilumno",
   "cli": {
+    "analytics": "fcd84f75-2796-4f50-8b14-2e391e367f61",
     "defaultCollection": "@ngrx/schematics"
   }
 }
