@@ -1,0 +1,51 @@
+<h1>Formulario de registro</h1>
+<div class="container">
+<form class="row g-3 align-items-center" (ngSubmit)="onSubmit()">
+  <div class="col-md-4 col-md-auto align-self-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Pedro" name="name" [formControl]="name" required>
+      <mat-error *ngIf="name.invalid">{{getErrorMessageName()}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-md-auto align-self-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Apellido</mat-label>
+      <input matInput placeholder="Jimenez" name="family_name" [formControl]="family_name" required>
+      <mat-error *ngIf="family_name.invalid">{{getErrorMessageFamilyName()}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-md-auto">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="pat@example.com" name="email" [formControl]="email">
+      <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-md-auto">
+    <mat-form-field hintLabel="Max 10 caracteres" appearance="outline">
+      <mat-label>Telefono</mat-label>
+      <input matInput #input maxlength="10" placeholder="3013881790" name="phone" [formControl]="phone">
+      <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      <mat-error *ngIf="phone.invalid">{{getErrorMessagePhone()}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-md-auto">
+    <mat-form-field appearance="outline">
+      <mat-label>Programa de interés</mat-label>
+      <mat-select [formControl]="program">
+        <mat-option *ngFor="let program of selectProgram" [value]="program.id">{{program.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4 col-md-auto">
+    <mat-form-field appearance="outline">
+      <mat-label>Comentario</mat-label>
+      <textarea matInput name="comment" [formControl]="comment"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="col-12">
+    <button mat-raised-button [disabled]="validateInputs()" type="submit" color="primary">Guardar</button>
+  </div>
+</form>
+</div>

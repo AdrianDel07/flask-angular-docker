@@ -1,0 +1,58 @@
+<h1>{{ textTitle }} {{ book ? "-- " + book.title : "" }}</h1>
+<div class="container">
+  <form class="row g-3 align-items-center" (ngSubmit)="onSubmit()">
+    <div class="col-md-4 col-md-auto align-self-center">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          placeholder="On The Road"
+          name="title"
+          [formControl]="title"
+          required
+        />
+        <mat-error *ngIf="title.invalid">{{
+          getErrorMessageTitle()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4 col-md-auto align-self-center">
+      <mat-form-field appearance="outline">
+        <mat-label>Author</mat-label>
+        <input
+          matInput
+          placeholder="Jack"
+          name="author"
+          [formControl]="author"
+          required
+        />
+        <mat-error *ngIf="author.invalid">{{
+          getErrorMessageAuthor()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4 col-md-auto">
+      <mat-form-field appearance="outline">
+        <mat-label>Read?</mat-label>
+        <mat-select [formControl]="read" required>
+          <mat-option *ngFor="let read of reads" [value]="read.id">{{
+            read.label
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="read.invalid">{{
+          getErrorMessageRead()
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-12">
+      <button
+        mat-raised-button
+        [disabled]="validateInputs()"
+        type="submit"
+        color="primary"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

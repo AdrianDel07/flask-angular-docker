@@ -1,0 +1,46 @@
+.myBtn {
+  font-family: Poppins;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+a {
+  display: block;
+  padding: 24px 48px;
+  font-family: Poppins;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: #101010;
+  border: 2px solid #101010;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  background: none;
+  z-index: 1;
+  cursor: crosshair;
+  transition: 0.8s ease-out;
+}
+
+.myBtn:hover {
+  color: #fff;
+  cursor: crosshair;
+}
+
+.myBtn:before {
+  content: "";
+  position: absolute;
+  background: #101010;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: -1;
+  transition: top 0.8s ease-out;
+}
+
+.myBtn:hover:before {
+  top: 0;
+}
