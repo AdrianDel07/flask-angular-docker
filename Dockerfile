@@ -1,19 +1,21 @@
-FROM ubuntu:16.04
 
-RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
+# Angular Container
+FROM node:12.14-alpine as build-step
 
-# We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /app/requirements.txt
+RUN mkdir -p /app
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+COPY /Angular/package.json /app/
 
-EXPOSE 5003
+RUN npm install
 
 COPY . /app
 
-ENTRYPOINT [ "python" ]
+RUN npm run build 
 
-CMD [ "app.py" ]
+# NGINX 
+
+FROM nginx:1.17.1-alpine
+
+COPY --from=build-step /app/dist/Angular /usr/share/nginx/html

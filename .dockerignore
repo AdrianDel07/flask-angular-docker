@@ -1,0 +1,15 @@
+.git
+
+.editorconfig
+
+/node_modules
+
+/docs
+
+/.gitignore
+
+*.zip
+
+*.md
+
+/postgres_data

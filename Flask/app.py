@@ -4,13 +4,19 @@ from flask_marshmallow import Marshmallow
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from src.infrastructure.books.controller import controller
-from flask_cors import (CORS, cross_origin)
+from flask_cors import (CORS)
+from flask_restplus import Api, Resource, fields
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:root@localhost:5432/source_meridian'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
 app.register_blueprint(controller)
+
+api = Api(app, version='1.0', title='TodoMVC API',
+    description='A simple TodoMVC API',
+)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -28,7 +34,9 @@ class Book(db.Model):
         self.author = author
         self.read = read
 
+
 db.create_all()
+
 
 class BookSchema(ma.Schema):
     class Meta:
