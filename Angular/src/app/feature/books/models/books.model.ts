@@ -5,7 +5,7 @@ export interface Book {
   read: boolean,
 }
 
-export interface PostBook {
+export interface BookModel {
   title: string,
   author: string,
   read: boolean,

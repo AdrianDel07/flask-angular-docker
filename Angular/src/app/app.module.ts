@@ -6,8 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './reducers';
-import { NewsService } from "./pages/news/service/service.module";
-import {NewsEffects} from './pages/news/store/news.effects';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -15,13 +13,12 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { LayoutComponent } from './layout/layout.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { NewsComponent } from './pages/news/news.component';
 import { MaterialModule} from './shared/material/material.module';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { EntityDataModule } from '@ngrx/data';
 import { entityConfig } from './entity-metadata';
 import { HomeComponent } from './pages/home/home.component';
+import { BookEffects } from './feature/books/store/books.effects';
 
 @NgModule({
   declarations: [
@@ -29,11 +26,6 @@ import { HomeComponent } from './pages/home/home.component';
     HeaderComponent,
     FooterComponent,
     LayoutComponent,
-    RegisterComponent,
-    NewsComponent,
-  
-    RegisterComponent,
-    NewsComponent,
     HomeComponent,
   ],
   entryComponents: [DialogComponent],
@@ -48,10 +40,10 @@ import { HomeComponent } from './pages/home/home.component';
     StoreModule.forRoot(reducers, {
       metaReducers
     }),
-    EffectsModule.forRoot([NewsEffects]),
+    EffectsModule.forRoot([BookEffects]),
     EntityDataModule.forRoot(entityConfig),
   ],
-  providers: [NewsService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

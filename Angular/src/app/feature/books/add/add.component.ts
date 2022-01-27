@@ -2,8 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
-import { Book, PostBook } from '../models/books.model';
+import { Book, BookModel } from '../models/books.model';
 import { BookService } from '../service/book.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-add',
@@ -11,7 +12,12 @@ import { BookService } from '../service/book.service';
   styleUrls: ['./add.component.sass'],
 })
 export class AddComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public book: Book | null, private bookService: BookService, public dialog: MatDialog) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public book: Book | null,
+    private bookService: BookService,
+    public dialog: MatDialog,
+    private store: Store
+  ) {}
 
   btnLoading = false;
 
@@ -33,38 +39,78 @@ export class AddComponent implements OnInit {
   textTitle: string = this.book ? 'Edit Book' : 'Add Book';
 
   ngOnInit(): void {
-
     if (this.book) {
-      console.log('Edit Data');
       this.title.setValue(this.book.title);
       this.author.setValue(this.book.author);
       this.read.setValue(this.book.read ? 1 : 0);
-    } else {
-      console.log('Save Data');
     }
   }
 
   onSubmit(): void {
     this.btnLoading = true;
-    console.log(JSON.stringify({ title: this.title.value, author: this.author.value, read: this.read.value }));
-    const data: PostBook = { title: this.title.value, author: this.author.value, read: this.read.value }
-    this.bookService.postBook(data).subscribe(() => {
-      this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Error',
-          description: 'No se ha podido guardar la información',
-        }
-      });
+
+    const book: BookModel = {
+      title: this.title.value,
+      author: this.author.value,
+      read: this.read.value,
+    };
+    if (this.book) {
+      this.editBook(this.book.id, book);
       this.btnLoading = false;
-    }, (err: unknown) => {
-      this.dialog.open(DialogComponent, {
-        data: {
-          title: 'Error',
-          description: 'No se ha podido guardar la información',
-        }
-      });
+    } else {
+      this.saveBook(book);
       this.btnLoading = false;
-    });
+    }
+  }
+
+  saveBook(book: BookModel): void {
+    this.bookService.postBook(book).subscribe(
+      () => {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: 'Success',
+            description: 'the information was saved success',
+          },
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      },
+      (err: unknown) => {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: 'Error',
+            description: 'the information could not be saved',
+          },
+        });
+      }
+    );
+  }
+
+  editBook(id: string, book: BookModel): void {
+    this.bookService.updateBookById(id, book).subscribe(
+      () => {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: 'Success',
+            description: 'the information was saved success',
+          },
+        });
+        this.btnLoading = false;
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      },
+      (err: unknown) => {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: 'Error',
+            description: 'the information could not be saved',
+          },
+        });
+        this.btnLoading = false;
+      }
+    );
   }
 
   getErrorMessageTitle() {
@@ -89,6 +135,11 @@ export class AddComponent implements OnInit {
   }
 
   validateInputs() {
-    return !this.title.valid || !this.author.valid || !this.read.valid || this.btnLoading;
+    return (
+      !this.title.valid ||
+      !this.author.valid ||
+      !this.read.valid ||
+      this.btnLoading
+    );
   }
 }

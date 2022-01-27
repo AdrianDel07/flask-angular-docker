@@ -9,9 +9,16 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 import { BookService } from './service/book.service';
+import { EffectsModule } from '@ngrx/effects';
+import { BookEffects } from './store/books.effects';
 
 @NgModule({
-  declarations: [BooksManagementComponent, TableComponent, AddComponent,  DialogComponent,],
+  declarations: [
+    BooksManagementComponent,
+    TableComponent,
+    AddComponent,
+    DialogComponent,
+  ],
   entryComponents: [AddComponent, DialogComponent],
   imports: [
     CommonModule,
@@ -19,6 +26,8 @@ import { BookService } from './service/book.service';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    EffectsModule.forFeature([BookEffects]),
+    // StoreModule.forRoot({ books: bookReducer }),
   ],
   providers: [BookService],
 })

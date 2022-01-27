@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+alembic = "==1.3.2"
+aniso8601 = "==8.0.0"
+click = "==7.0"
+Flask = "==1.1.1"
+Flask-Migrate = "==2.5.2"
+Flask-RESTful = "==0.3.7"
+Flask-Script = "==2.0.6"
+Flask-SQLAlchemy = "==2.4.1"
+psycopg2-binary = "*"
+pytz = "==2019.3"
+marshmallow = "==0.14.0"
+flask = "*"
+flask-restplus = "*"
+flask-marshmallow = "*"
+flask-sqlalchemy = "*"
+flask-cors = "*"
+"Werkzeug=" = "0.16.1"
+marshmallow-sqlalchemy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
